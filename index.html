@@ -1,0 +1,35 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>socket.io</title>
+  </head>
+  <body>
+    <h1>socket-io</h1>
+    <div>
+      <input type="number" id="lineNumber" placeholder="number" />
+      <input type="button" id="submitBtn" value="show" />
+    </div>
+
+    <div class="content"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on(`content`, data => {
+        var div = document.querySelector(`.content`);
+        div.innerHTML = data.map(d => `<p>${d}</p>`).join(``);
+      });
+      var btn = document.getElementById(`submitBtn`);
+      btn.addEventListener(`click`, e => {
+        var lines = document.getElementById(`lineNumber`);
+        if (!lines.value) return;
+        socket.emit(`lines`, lines.value);
+      });
+    </script>
+  </body>
+</html>
